@@ -1,0 +1,22 @@
+<%- await include('header.ejs', { title: 'include example' }) %>
+
+    <h1>Warenkorb</h1>
+
+    <table class="table">
+        <tr>
+            <th>Produkt</th>
+            <th>Einzelpreis</th>
+            <th>Anzahl</th>
+            <th>Total</th>
+        </tr>
+        
+        <% if(cartitems !== undefined){ for(let i=0; i < cartitems.length; i++) { %>
+            <td><%= cartitems[i].product.productName %></td>
+            <td><%= cartitems[i].product.productPrice %></td>
+            <td><%= cartitems[i].amount %></td>
+            <td><%= cartitems[i].price %></td>
+        <% }} %>
+
+    </table>
+
+<%- await include('footer.ejs') %>
