@@ -17,12 +17,15 @@
                             <img style="height: 200px; width: 200px; background-color: rgba(238, 238, 238, 0.836);"
                                 src="/products/<%= products[i].imageName %>">
                             <br>
-                            <%= products[i].normalPrice %>
-                                <br>
-                                <button
-                                    onclick="openEditProductModal('<%= products[i].id %>','<%= products[i].productName %>')"
-                                    type="button">Hinzufügen
-                                </button>
+                            <div style="display: flex; justify-content: space-between;">
+                                <p style="flex-basis: 7%; color:tomato;"><del><%= products[i].normalPrice %> CHF</del></p>   
+                                <p style="flex-basis: 100%; color: green;"><%= products[i].specialOffer %> CHF</p>
+                            </div>
+                            <br>
+                            <button
+                                onclick="openEditProductModal('<%= products[i].id %>','<%= products[i].productName %>')"
+                                type="button">Hinzufügen
+                            </button>
                     </li>
 
                     <% } %>

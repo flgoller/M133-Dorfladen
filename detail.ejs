@@ -9,7 +9,12 @@
         <div class="card-body">
             <img style="height: 400px; width: 400px; background-color: rgba(238, 238, 238, 0.836);" src='/products/<%= product.imageName %>'>
             <br>
-            <%= product.ProductPrice %>
+            <div style="display: flex; justify-content: space-between;">
+                <p style="flex-basis: 7%; color:tomato;"><del><%= product.normalPrice %> CHF</del></p>   
+                <p style="flex-basis: 100%; color: green;"><%= product.specialOffer %> CHF</p>
+            </div>
+            <br>
+            <%= product.description %>
             <br>
             <button onclick="openEditProductModal('<%= product.id %>','<%= product.productName %>')" type="button">Hinzufügen</button>
         </div>
