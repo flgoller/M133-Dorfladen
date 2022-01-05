@@ -11,12 +11,19 @@
         </tr>
         
         <% if(cartitems !== undefined){ for(let i=0; i < cartitems.length; i++) { %>
-            <td><%= cartitems[i].product.productName %></td>
-            <td><%= cartitems[i].product.productPrice %></td>
-            <td><%= cartitems[i].amount %></td>
-            <td><%= cartitems[i].price %></td>
+            <tr>
+                <td><%= cartitems[i].product.productName %></td>
+                <td><%= cartitems[i].product.normalPrice %></td>
+                <td><%= cartitems[i].amount %></td>
+                <td><%= cartitems[i].price() %></td>
+                <td><a href="/cart/item/<%= cartitems[i].product.id %>/remove">remove</a></td>
+            </tr>   
         <% }} %>
 
     </table>
 
 <%- await include('footer.ejs') %>
+
+<script>
+    console.log(cartitems)
+</script>

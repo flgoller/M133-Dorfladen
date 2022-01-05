@@ -2,7 +2,7 @@
 import { Application, Router, renderFileToString, send } from "./deps.js";
 import { viewEngine, engineFactory, adapterFactory } from "https://deno.land/x/view_engine/mod.ts";
 import { readJson } from 'https://deno.land/x/jsonfile/mod.ts';
-import { Session } from "https://deno.land/x/session@1.1.0/mod.ts";
+import { Session } from "https://deno.land/x/oak_sessions/mod.ts";
 
 const ejsEngine = await engineFactory.getEjsEngine();
 const oakAdapter = await adapterFactory.getOakAdapter();
@@ -10,7 +10,7 @@ const oakAdapter = await adapterFactory.getOakAdapter();
 class cartitem{
     product;
     amount = 1;
-    price = () => {
+    price() {
         return this.product.normalPrice * this.amount
     };
     constructor(product){
@@ -22,15 +22,11 @@ let products = await readJson('static/products/products.json')
 
 const app = new Application();
 
-// Configuring Session for the Oak framework
-const session = new Session({ framework: "oak" });
-await session.init();
-
-// Adding the Session middleware. Now every context will include a property
-// called session that you can use the get and set functions on
-app.use(session.use()(session));
-
+// Session konfigurieren und starten
+const session = new Session();
 const router = new Router();
+
+app.use(session.initMiddleware())
 
 router.get("/", async (ctx) => {
     ctx.response.body = await renderFileToString(Deno.cwd() + "/index.ejs", {
@@ -47,39 +43,40 @@ router.get('/product/:id', async (ctx) => {
 });
 router.get("/product/:id/add", async (ctx) =>{
     const productId = ctx.params.id;
-    if (await ctx.state.session.get("cart") === undefined) {
+    if (!await ctx.state.session.has("cart")) {
         await ctx.state.session.set("cart", []);
-        console.log("miese zeiten")
     }
-    await ctx.state.session.set("cart", [...(await ctx.state.session.get("cart")), new cartitem(products.find(product => product.id == productId))]);
 
-    console.log(await ctx.state.session.get("cart"))
+    let cart = await ctx.state.session.get("cart");
+    let product = products.find(product => product.id == productId);
+    if(cart.find(x => x.product.id === product.id)){
+        cart.find(x => x.product.id === product.id).amount++;
+    }
+    else
+    {
+        cart = [...cart, new cartitem(product)]
+    }
+    await ctx.state.session.set("cart", cart);
+
     ctx.response.redirect("/");
 })
 router.get('/cart', async (ctx) => {
-    console.log(await ctx.state.session.get("cart"))
     ctx.response.body = await renderFileToString(Deno.cwd() + "/cart.ejs", {
         title: "Warenkorb",
         cartitems: await ctx.state.session.get("cart")
     });
 });
+router.get('/cart/item/:id/remove', async (ctx) => {
+    let cart = await ctx.state.session.get("cart");
+    const productId = ctx.params.id;
 
-router.post("/addProduct", async (ctx) => {
+    cart.filter(x => x.product.id != productId)
+    await ctx.state.session.set("cart", cart)
 
-    let formContent = await ctx.request.body({ type: 'form' }).value; // Input vom Formular wird übergeben
-    let nameValue = formContent.get("newProductName"); // newProductName wird ausgelesen
-
-    console.log("Ein addProduct post request erhalten für: " + nameValue);
-
-    if (nameValue) {
-        products.push(
-            { id: counter++, name: nameValue } // Nimmt die nächsthöhere Nummer
-        );
-    }
-
-    ctx.response.redirect("/"); // Zur Startseite weiterführen
+    ctx.response.redirect("/cart");
 });
 
+app.use(viewEngine(oakAdapter, ejsEngine));
 app.use(router.routes());
 app.use(router.allowedMethods());
 app.use(async (context) => {
@@ -87,7 +84,7 @@ app.use(async (context) => {
         root: `${Deno.cwd()}/static`
     });
 });
-app.use(viewEngine(oakAdapter, ejsEngine));
+
 
 
 app.addEventListener('listen', () => {
