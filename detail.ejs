@@ -1,5 +1,10 @@
 <%- await include('header.ejs', { title: 'include example' }) %>
 
+<script>
+    const currency = function(number){
+    return new Intl.NumberFormat('en-IN', {style: 'currency',currency: 'INR', minimumFractionDigits: 2}).format(number)};
+</script>
+
 <div class="card">
 
     <div class="card-header">
@@ -12,11 +17,11 @@
         <br>
         <table>
             <tr>
-                <th width="65px">
-                    <p style="flex-basis: 50px; color: black;"><%= product.specialOffer %> CHF</p>
+                <th width="80px">
+                    <p id="specialOffer" style="flex-basis: 50px; color: black;"></p>
                 </th>
                 <th>
-                    <p style="flex-basis: 10px; color:tomato;"><del><%= product.normalPrice %> CHF</del></p> 
+                    <p id="normalPrice" style="flex-basis: 10px; color:tomato;text-decoration: line-through;"></p> 
                 </th>
             </tr>
         </table>
@@ -26,5 +31,11 @@
         <a href="/product/<%= product.id %>/add">Hinzufügen</a>
     </div>
 </div>
+
+<script>
+    document.getElementById('specialOffer').textContent = new Intl.NumberFormat('de-CH', {style: 'currency',currency: 'CHF', minimumFractionDigits: 2}).format("<%= product.specialOffer %>");
+    document.getElementById('normalPrice').textContent = new Intl.NumberFormat('de-CH', {style: 'currency',currency: 'CHF', minimumFractionDigits: 2}).format("<%= product.normalPrice %>");
+</script>
+
 
 <%- await include('footer.ejs') %>

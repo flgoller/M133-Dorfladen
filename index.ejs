@@ -20,19 +20,24 @@
                         <table>
                             <tr>
                                 <th width="80px">
-                                    <p style="flex-basis: 50px; color: black;"><%= products[i].specialOffer %> CHF</p>
+                                    <p id="specialOffer<%=i%>" type="currency" style="flex-basis: 50px; color: black;"></p>
                                 </th>
                                 <th>
-                                    <p style="flex-basis: 10px; color:tomato;"><del><%= products[i].normalPrice %> CHF</del></p> 
+                                    <p id="normalPrice<%=i%>" style="flex-basis: 10px; color:tomato;text-decoration: line-through;"></p> 
                                 </th>
                             </tr>
                         </table>
                         <a href="/product/<%= products[i].id %>/add">Hinzufügen</a>
                     </li>
-
+                    <script>
+                        document.getElementById('specialOffer<%=i%>').textContent = new Intl.NumberFormat('de-CH', {style: 'currency',currency: 'CHF', minimumFractionDigits: 2}).format("<%= products[i].specialOffer %>");
+                        document.getElementById('normalPrice<%=i%>').textContent = new Intl.NumberFormat('de-CH', {style: 'currency',currency: 'CHF', minimumFractionDigits: 2}).format("<%= products[i].normalPrice %>");
+                    </script>
                     <% } %>
             </ul>
         </div>
     </div>
+
+
 
     <%- await include('footer.ejs') %>
