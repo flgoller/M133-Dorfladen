@@ -16,15 +16,18 @@
                             <br>
                             <img style="height: 200px; width: 200px; background-color: rgba(238, 238, 238, 0.836);"
                                 src="/products/<%= products[i].imageName %>">
-                            <br>
-                            <div style="display: flex; justify-content: space-between;">
-                                <p style="flex-basis: 7%; color:tomato;"><del><%= products[i].normalPrice %> CHF</del></p>   
-                                <p style="flex-basis: 100%; color: green;"><%= products[i].specialOffer %> CHF</p>
-                            </div>
-                            <br>
-                            <a
-                                href="/product/<%= products[i].id %>/add">Hinzufügen
-                            </a>
+                        </a>
+                        <table>
+                            <tr>
+                                <th width="80px">
+                                    <p style="flex-basis: 50px; color: black;"><%= products[i].specialOffer %> CHF</p>
+                                </th>
+                                <th>
+                                    <p style="flex-basis: 10px; color:tomato;"><del><%= products[i].normalPrice %> CHF</del></p> 
+                                </th>
+                            </tr>
+                        </table>
+                        <a href="/product/<%= products[i].id %>/add">Hinzufügen</a>
                     </li>
 
                     <% } %>

@@ -37,8 +37,8 @@ router.get("/", async (ctx) => {
 router.get('/product/:id', async (ctx) => {
     const productId = ctx.params.id;
     ctx.response.body = await renderFileToString(Deno.cwd() + "/detail.ejs", {
-        product: products.find(item => item.id == productId),
-        title: products.find(item => item.id == productId).productName
+        product: products.find(product => product.id == productId),
+        title: products.find(product => product.id == productId).productName
     });
 });
 router.get("/product/:id/add", async (ctx) =>{
