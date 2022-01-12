@@ -18,6 +18,17 @@ class cartitem{
     }
 }
 
+async function getCartPrice(cart)
+{
+    let cartPrice = 0;
+    if(cart){
+        cart.forEach(element => {
+            cartPrice += element.price();
+        });
+    }
+    return cartPrice;
+}
+
 let products = await readJson('static/products/products.json')
 
 const app = new Application();
@@ -29,16 +40,22 @@ const router = new Router();
 app.use(session.initMiddleware())
 
 router.get("/", async (ctx) => {
+    let cart = await ctx.state.session.get("cart");
+    const cartPrice = await getCartPrice(cart);
     ctx.response.body = await renderFileToString(Deno.cwd() + "/index.ejs", {
         title: "Produkte",
-        products: products
+        products: products,
+        cartPrice: cartPrice
     });
 });
 router.get('/product/:id', async (ctx) => {
     const productId = ctx.params.id;
+    let cart = await ctx.state.session.get("cart");
+    const cartPrice = await getCartPrice(cart);
     ctx.response.body = await renderFileToString(Deno.cwd() + "/detail.ejs", {
         product: products.find(product => product.id == productId),
-        title: products.find(product => product.id == productId).productName
+        title: products.find(product => product.id == productId).productName,
+        cartPrice: cartPrice
     });
 });
 router.get("/product/:id/add", async (ctx) =>{
@@ -61,13 +78,15 @@ router.get("/product/:id/add", async (ctx) =>{
     ctx.response.redirect("/");
 })
 router.get('/cart', async (ctx) => {
+    let cart = await ctx.state.session.get("cart");
+    const cartPrice = await getCartPrice(cart);
     ctx.response.body = await renderFileToString(Deno.cwd() + "/cart.ejs", {
         title: "Warenkorb",
-        cartitems: await ctx.state.session.get("cart")
+        cartitems: await ctx.state.session.get("cart"),
+        cartPrice: cartPrice
     });
 });
 router.get('/cart/item/:id/remove', async (ctx) => {
-    debugger;
     let cart = await ctx.state.session.get("cart");
     const productId = ctx.params.id;
 
