@@ -77,6 +77,25 @@ router.get("/product/:id/add", async (ctx) =>{
 
     ctx.response.redirect("/");
 })
+router.get("/product/:id/dad/cart", async (ctx) =>{
+    const productId = ctx.params.id;
+    if (!await ctx.state.session.has("cart")) {
+        await ctx.state.session.set("cart", []);
+    }
+
+    let cart = await ctx.state.session.get("cart");
+    let product = products.find(product => product.id == productId);
+    if(cart.find(x => x.product.id === product.id)){
+        cart.find(x => x.product.id === product.id).amount++;
+    }
+    else
+    {
+        cart = [...cart, new cartitem(product)]
+    }
+    await ctx.state.session.set("cart", cart);
+
+    ctx.response.redirect("/cart");
+})
 router.get('/cart', async (ctx) => {
     let cart = await ctx.state.session.get("cart");
     const cartPrice = await getCartPrice(cart);

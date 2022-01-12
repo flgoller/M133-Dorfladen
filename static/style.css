@@ -1,3 +1,10 @@
-#main-container{
+#main-container {
     min-height: 100vh;
+}
+
+.changeAmount {
+    width: 30px;
+    background-color: transparent;
+    color: orange;
+    border: 3px solid orange;
 }
