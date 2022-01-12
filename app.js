@@ -11,7 +11,7 @@ class cartitem{
     product;
     amount = 1;
     price() {
-        return this.product.normalPrice * this.amount
+        return this.product.specialOffer * this.amount
     };
     constructor(product){
         this.product = product;

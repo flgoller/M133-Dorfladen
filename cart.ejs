@@ -13,17 +13,20 @@
         <% if(cartitems !== undefined){ for(let i=0; i < cartitems.length; i++) { %>
             <tr>
                 <td><%= cartitems[i].product.productName %></td>
-                <td><%= cartitems[i].product.normalPrice %></td>
+                <td id="price<%=i%>"><%= cartitems[i].product.specialOffer %></td>
                 <td><%= cartitems[i].amount %></td>
-                <td><%= cartitems[i].price() %></td>
+                <td id="totalPrice<%=i%>"><%= cartitems[i].price() %></td>
                 <td><a href="/cart/item/<%= cartitems[i].product.id %>/remove">remove</a></td>
             </tr>   
+            <script>
+                document.getElementById('price<%=i%>').textContent = new Intl.NumberFormat('de-CH', {style: 'currency',currency: 'CHF', minimumFractionDigits: 2}).format("<%= cartitems[i].product.specialOffer %>");
+                document.getElementById('totalPrice<%=i%>').textContent = new Intl.NumberFormat('de-CH', {style: 'currency',currency: 'CHF', minimumFractionDigits: 2}).format("<%= cartitems[i].price() %>");
+            </script>           
         <% }} %>
-
     </table>
 
 <%- await include('footer.ejs') %>
 
 <script>
-    console.log(cartitems)
+    console.log(cartitems);
 </script>
