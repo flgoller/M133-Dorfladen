@@ -67,10 +67,11 @@ router.get('/cart', async (ctx) => {
     });
 });
 router.get('/cart/item/:id/remove', async (ctx) => {
+    debugger;
     let cart = await ctx.state.session.get("cart");
     const productId = ctx.params.id;
 
-    cart.filter(x => x.product.id != productId)
+    cart = cart.filter(x => x.product.id != productId)
     await ctx.state.session.set("cart", cart)
 
     ctx.response.redirect("/cart");
