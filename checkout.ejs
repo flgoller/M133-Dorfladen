@@ -1,0 +1,30 @@
+<%- await include('header.ejs', { title: 'include example', cartPrice: cartPrice }) %>
+
+<h1>Checkout</h1>
+<form action="/order" method="post">
+    <div class="form-group">
+        <label for="prename">Vorname</label>
+        <input type="text" class="form-control" id="prename" name="prename" required>
+    </div>
+    <div class="form-group">
+        <label for="name">Nachname</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+    <% if(errorMessages){ 
+        for(const message of errorMessages){ %>
+            <span class="error text-danger"><%= message %></span><br>
+            
+    <% }} %>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+<%- await include('footer.ejs') %>
+
+    <script>
+        console.log(cartitems);
+    </script>

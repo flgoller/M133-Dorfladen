@@ -1,0 +1,56 @@
+<%- await include('header.ejs', { title: 'include example', cartPrice: cartPrice }) %>
+
+<h3>Produkte</h3>
+<table class="table">
+    <tr>
+        <th>Produkt</th>
+        <th>Einzelpreis</th>
+        <th>Anzahl</th>
+        <th>Total</th>
+    </tr>
+
+    <% if(cartitems !== undefined){ for(let i=0; i < cartitems.length; i++) { %>
+    <tr>
+        <td><%= cartitems[i].product.productName %></td>
+        <td id="price<%=i%>"><%= cartitems[i].product.specialOffer %></td>
+        <td>
+            <%= cartitems[i].amount %>
+        </td>
+        <td id="totalPrice<%=i%>"><%= cartitems[i].price() %></td>
+    </tr>
+    <script>
+        document.getElementById('price<%=i%>').textContent = new Intl.NumberFormat('de-CH', {
+            style: 'currency',
+            currency: 'CHF',
+            minimumFractionDigits: 2
+        }).format("<%= cartitems[i].product.specialOffer %>");
+        document.getElementById('totalPrice<%=i%>').textContent = new Intl.NumberFormat('de-CH', {
+            style: 'currency',
+            currency: 'CHF',
+            minimumFractionDigits: 2
+        }).format("<%= cartitems[i].price() %>");
+    </script>
+    <% }} %>
+</table>
+
+<h3>Bestelldetails</h3>
+<table class="table">
+    <tr>
+        <th>Vorname</th>
+        <th>Nachname</th>
+        <th>Email</th>
+    </tr>
+    <tr>
+        <td><%= orderDetails.prename %> </td>
+        <td><%= orderDetails.name %> </td>
+        <td><%= orderDetails.email %> </td>
+    </tr>
+    
+</table>
+
+
+<%- await include('footer.ejs') %>
+
+<script>
+    console.log(cartitems);
+</script>

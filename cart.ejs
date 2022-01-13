@@ -14,7 +14,15 @@
             <tr>
                 <td><%= cartitems[i].product.productName %></td>
                 <td id="price<%=i%>"><%= cartitems[i].product.specialOffer %></td>
-                <td><%= cartitems[i].amount %></td>
+                <td>
+                    <a class="btn btn-primary" href="/product/<%= cartitems[i].product.id %>/remove/cart">
+                        <i class="fa-xs fa fa-minus" style="font-size: 10px;"></i>
+                    </a>
+                    <%= cartitems[i].amount %>
+                    <a class="btn btn-primary" href="/product/<%= cartitems[i].product.id %>/add/cart">
+                        <i class="fa-xs fa fa-plus" style="font-size: 10px;"></i>
+                    </button>
+                </td>
                 <td id="totalPrice<%=i%>"><%= cartitems[i].price() %></td>
                 <td><a href="/cart/item/<%= cartitems[i].product.id %>/remove">remove</a></td>
             </tr>   
@@ -24,6 +32,9 @@
             </script>           
         <% }} %>
     </table>
+    <a class="btn btn-primary" href="/checkout">
+        Checkout
+    </a>
 
 <%- await include('footer.ejs') %>
 

@@ -1,43 +1,60 @@
 <%- await include('header.ejs', { title: 'include example', cartPrice: cartPrice  }) %>
 
-    <div class="card">
+<div class="card">
 
-        <div class="card-header">
-            <%= title %>
-        </div>
+    <div class="card-header">
+        <%= title %>
+    </div>
 
-        <div class="card-body">
-            <ul class="list-group">
-
-                <% for(let i=0; i < products.length; i++) { %>
-
-                    <li class="list-group-item">
-                        <a href="/product/<%= products[i].id %>" style="color: black;">
-                            <br>
-                            <img style="height: 200px; width: 200px; background-color: rgba(238, 238, 238, 0.836);"
-                                src="/products/<%= products[i].imageName %>">
-                        </a>
+    <div class="card-body container">
+        <div class="row">
+            <% for(let i=0; i < products.length; i++) { %>
+            <div class="col-md-4">
+                <div class="card" style="margin-bottom: 20px;">
+                    <img class="card-img-top" src="/products/<%= products[i].imageName %>" alt="Card image cap">
+                    <div class="card-header">
+                        <%= products[i].productName %>
+                    </div>
+                    <div class="card-body">
+                        <a href="/product/<%= products[i].id %>" style="color: black;" class="btn"></a>
                         <table>
                             <tr>
                                 <th width="80px">
                                     <p id="specialOffer<%=i%>" type="currency" style="flex-basis: 50px; color: black;"></p>
                                 </th>
                                 <th>
-                                    <p id="normalPrice<%=i%>" style="flex-basis: 10px; color:tomato;text-decoration: line-through;"></p> 
+                                    <p id="normalPrice<%=i%>"
+                                        style="flex-basis: 10px; color:tomato;text-decoration: line-through;">
+                                    </p>
                                 </th>
                             </tr>
                         </table>
                         <a href="/product/<%= products[i].id %>/add">Hinzufügen</a>
-                    </li>
-                    <script>
-                        document.getElementById('specialOffer<%=i%>').textContent = new Intl.NumberFormat('de-CH', {style: 'currency',currency: 'CHF', minimumFractionDigits: 2}).format("<%= products[i].specialOffer %>");
-                        document.getElementById('normalPrice<%=i%>').textContent = new Intl.NumberFormat('de-CH', {style: 'currency',currency: 'CHF', minimumFractionDigits: 2}).format("<%= products[i].normalPrice %>");
-                    </script>
-                    <% } %>
-            </ul>
+                    </div>
+                </div>    
+            </div>
+            <script>
+                document.getElementById('specialOffer<%=i%>').textContent = new Intl.NumberFormat('de-CH', {
+                    style: 'currency',
+                    currency: 'CHF',
+                    minimumFractionDigits: 2
+                }).format("<%= products[i].specialOffer %>");
+                document.getElementById('normalPrice<%=i%>').textContent = new Intl.NumberFormat('de-CH', {
+                    style: 'currency',
+                    currency: 'CHF',
+                    minimumFractionDigits: 2
+                }).format("<%= products[i].normalPrice %>");
+            </script>
+            <% } %>
         </div>
+
+
+
+
+
     </div>
+</div>
 
 
 
-    <%- await include('footer.ejs') %>
+<%- await include('footer.ejs') %>
