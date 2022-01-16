@@ -1,7 +1,9 @@
 # M133-Dorfladen
 
-Aktuellste Deno version herunterladen:
+### Aktuellste Deno version herunterladen:
+
 iwr https://deno.land/install.ps1 -useb | iex
 
-Server starten:
+### Server starten:
+
 deno run --allow-all app.js
