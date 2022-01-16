@@ -2,36 +2,39 @@
 
     <h1>Warenkorb</h1>
 
-    <table class="table">
-        <tr>
-            <th>Produkt</th>
-            <th>Einzelpreis</th>
-            <th>Anzahl</th>
-            <th>Total</th>
-        </tr>
-        
-        <% if(cartitems !== undefined){ for(let i=0; i < cartitems.length; i++) { %>
+    <div class="wrap">
+        <table class="tableCart">
             <tr>
-                <td><%= cartitems[i].product.productName %></td>
-                <td id="price<%=i%>"><%= cartitems[i].product.specialOffer %></td>
-                <td>
-                    <a class="btn btn-primary" href="/product/<%= cartitems[i].product.id %>/remove/cart">
-                        <i class="fa-xs fa fa-minus" style="font-size: 10px;"></i>
-                    </a>
-                    <%= cartitems[i].amount %>
-                    <a class="btn btn-primary" href="/product/<%= cartitems[i].product.id %>/add/cart">
-                        <i class="fa-xs fa fa-plus" style="font-size: 10px;"></i>
-                    </button>
-                </td>
-                <td id="totalPrice<%=i%>"><%= cartitems[i].price() %></td>
-                <td><a href="/cart/item/<%= cartitems[i].product.id %>/remove">remove</a></td>
-            </tr>   
-            <script>
-                document.getElementById('price<%=i%>').textContent = new Intl.NumberFormat('de-CH', {style: 'currency',currency: 'CHF', minimumFractionDigits: 2}).format("<%= cartitems[i].product.specialOffer %>");
-                document.getElementById('totalPrice<%=i%>').textContent = new Intl.NumberFormat('de-CH', {style: 'currency',currency: 'CHF', minimumFractionDigits: 2}).format("<%= cartitems[i].price() %>");
-            </script>           
-        <% }} %>
-    </table>
+                <th>Produkt</th>
+                <th>Einzelpreis</th>
+                <th>Anzahl</th>
+                <th>Total</th>
+            </tr>
+            
+            <% if(cartitems !== undefined){ for(let i=0; i < cartitems.length; i++) { %>
+                <tr>
+                    <td><%= cartitems[i].product.productName %></td>
+                    <td id="price<%=i%>"><%= cartitems[i].product.specialOffer %></td>
+                    <td>
+                        <a class="btn btn-primary" href="/product/<%= cartitems[i].product.id %>/remove/cart">
+                            <i class="fa-xs fa fa-minus" style="font-size: 10px;"></i>
+                        </a>
+                        <%= cartitems[i].amount %>
+                        <a class="btn btn-primary" href="/product/<%= cartitems[i].product.id %>/add/cart">
+                            <i class="fa-xs fa fa-plus" style="font-size: 10px;"></i>
+                        </button>
+                    </td>
+                    <td id="totalPrice<%=i%>"><%= cartitems[i].price() %></td>
+                    <td><a href="/cart/item/<%= cartitems[i].product.id %>/remove">remove</a></td>
+                </tr>   
+                <script>
+                    document.getElementById('price<%=i%>').textContent = new Intl.NumberFormat('de-CH', {style: 'currency',currency: 'CHF', minimumFractionDigits: 2}).format("<%= cartitems[i].product.specialOffer %>");
+                    document.getElementById('totalPrice<%=i%>').textContent = new Intl.NumberFormat('de-CH', {style: 'currency',currency: 'CHF', minimumFractionDigits: 2}).format("<%= cartitems[i].price() %>");
+                </script>           
+            <% }} %>
+        </table>
+    </div>
+   
     <a class="btn btn-primary" href="/checkout">
         Checkout
     </a>

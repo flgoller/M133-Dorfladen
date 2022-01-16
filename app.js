@@ -19,14 +19,22 @@ class cartitem {
     }
 }
 
-async function getCartPrice(cart) {
+async function getCartPrice(cart, withCurreny = true) {
     let cartPrice = 0;
     if (cart) {
         cart.forEach(element => {
             cartPrice += element.price();
         });
     }
-    return cartPrice;
+
+    if(withCurreny)
+    {
+        return new Intl.NumberFormat('de-CH', {style: 'currency',currency: 'CHF', minimumFractionDigits: 2}).format(cartPrice);
+    }
+    else
+    {
+        return cartPrice;
+    }
 }
 
 let products = await readJson('static/products/products.json')
@@ -137,7 +145,7 @@ router.get('/cart/item/:id/remove', async (ctx) => {
 });
 router.get('/checkout', async (ctx) => {
     const cart = await ctx.state.session.get("cart");
-    const cartPrice = await getCartPrice(cart);
+    const cartPrice = await getCartPrice(cart, false);
     if (cartPrice > 0) {
         ctx.response.body = await renderFileToString(Deno.cwd() + "/checkout.ejs", {
             title: "Checkout",
